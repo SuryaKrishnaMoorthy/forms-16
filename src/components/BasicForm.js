@@ -1,4 +1,6 @@
 import useInput from '../hooks/use-input';
+const isNotEmpty = (value) => value.trim() !== '';
+const isEmail = (value) => value.includes('@');
 
 const BasicForm = () => {
 	const {
@@ -8,7 +10,7 @@ const BasicForm = () => {
 		valueChangeHandler: firstNameChangeHandler,
 		inputBlurHandler: firstNameBlurHandler,
 		reset: resetFirstName
-	} = useInput(value => value.trim());
+	} = useInput(isNotEmpty);
 
 	const {
 		value: enteredLastName,
@@ -17,7 +19,7 @@ const BasicForm = () => {
 		valueChangeHandler: lastNameChangeHandler,
 		inputBlurHandler: lastNameBlurHandler,
 		reset: resetLastName
-	} = useInput(value => value.trim());
+	} = useInput(isNotEmpty);
 
 	const {
 		value: enteredEmail,
@@ -26,14 +28,14 @@ const BasicForm = () => {
 		valueChangeHandler: emailChangeHandler,
 		inputBlurHandler: emailBlurHandler,
 		reset: resetEmail
-	} = useInput(value => value.includes('@'));
+	} = useInput(isEmail);
 
 	let formIsValid = false;
 	if(firstNameIsValid && lastNameIsValid && emailIsValid) {
 		formIsValid = true;
 	}
 
-	const formSubmitHandler = (event) => {
+	const submitHandler = (event) => {
 		event.preventDefault();
 		if(!formIsValid) {
 			return;
@@ -59,36 +61,36 @@ const BasicForm = () => {
 	: "form-control invalid";
 
 	return (
-		<form onSubmit={formSubmitHandler}>
+		<form onSubmit={submitHandler}>
 			<div className="control-group">
 				<div className={firstNameClasses}>
 					<label htmlFor="name">First Name</label>
 					<input 
 						type="text" id="name"
+						value={enteredfirstName}
 						onChange={firstNameChangeHandler}
 						onBlur={firstNameBlurHandler}
-						value={enteredfirstName}
 					/>
-					{firstNameHasError && <p className="error-text">Please enter valid value!</p>}
+					{firstNameHasError && <p className="error-text">Please enter first name!</p>}
 				</div>
 				<div className={lastNameClasses}>
 					<label htmlFor="name">Last Name</label>
 					<input 
 						type="text" id="name"
+						value={enteredLastName}
 						onChange={lastNameChangeHandler}
 						onBlur={lastNameBlurHandler}
-						value={enteredLastName}
 					/>
-					{lastNameHasError && <p className="error-text">Please enter valid value!</p>}
+					{lastNameHasError && <p className="error-text">Please enter last name!</p>}
 				</div>
 			</div>
 			<div className={emailClasses}>
 				<label htmlFor="name">E-mail Address</label>
 				<input 
 					type="text" id="name"
+					value={enteredEmail}
 					onChange={emailChangeHandler}
 					onBlur={emailBlurHandler}
-					value={enteredEmail}
 				/>
 				{emailHasError && <p className="error-text">Please enter valid email!</p>}
 
